@@ -10,9 +10,37 @@ class Router {
     }
   }
 
+  // ------------------ Utility Functions -----------------
   clearSlashes = (path) =>
-    path.toString().replace(/\/$/, "").replace(/^\//, "");
+    path ? path.toString().replace(/\/$/, "").replace(/^\//, "") : path;
+  // ------------------------------------------------------
 
+  // -------------- Router Mode ---------------------------
+  hashStrategy = () => {
+    const match = window.location.href.match(/#(.*)$/);
+    return match ? match[1] : "";
+  };
+
+  historyStrategy = () => {
+    const uri = window.location.pathname + window.location.search;
+    const fragment = this.clearSlashes(decodeURI(uri));
+    const result = fragment.replace(/\?(.*)$/, "");
+    return this.root !== "/" ? result.replace(this.root, "") : result;
+  };
+
+  modeStrategies = {
+    history: this.historyStrategy,
+    hash: this.hashStrategy,
+  };
+
+  getFragment = () => {
+    const fragment = this.modeStrategies[this.mode]();
+    console.log("Fragment: ", fragment);
+    return this.clearSlashes(fragment);
+  };
+  // ------------------------------------------------------
+
+  // ----------------- Router API -------------------------
   add = (path, callback) => {
     const route = {
       path,
@@ -33,4 +61,5 @@ class Router {
     this.routes = [];
     return this;
   };
+  // ------------------------------------------------------
 }
