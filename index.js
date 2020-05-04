@@ -1,5 +1,5 @@
 const options = {
-  mode: "history",
+  mode: "hash",
 };
 
 const router = new Router(options);
@@ -21,4 +21,7 @@ console.log("Init: ", router);
 // router.flush();
 // console.log('Flush: ', router);
 
-router.getFragment();
+router.getCurrentRoute();
+
+const userButton = document.querySelector("#user");
+userButton.addEventListener("click", () => router.navigateTo("/user"));

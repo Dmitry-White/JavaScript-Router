@@ -1,12 +1,13 @@
 class Router {
   routes = [];
   mode = window.history.pushState ? "history" : "hash";
+  hashRegex = /#(.*)$/;
   root = "/";
 
   constructor(options) {
     if (options) {
-      this.mode = options.mode && options.mode;
-      this.root = options.root && options.root;
+      this.mode = options.mode || this.mode;
+      this.root = options.root || this.root;
     }
   }
 
@@ -16,27 +17,36 @@ class Router {
   // ------------------------------------------------------
 
   // -------------- Router Mode ---------------------------
-  hashStrategy = () => {
-    const match = window.location.href.match(/#(.*)$/);
-    return match ? match[1] : "";
-  };
-
-  historyStrategy = () => {
-    const uri = window.location.pathname + window.location.search;
-    const fragment = this.clearSlashes(decodeURI(uri));
-    const result = fragment.replace(/\?(.*)$/, "");
-    return this.root !== "/" ? result.replace(this.root, "") : result;
-  };
-
-  modeStrategies = {
-    history: this.historyStrategy,
-    hash: this.hashStrategy,
-  };
-
-  getFragment = () => {
-    const fragment = this.modeStrategies[this.mode]();
-    console.log("Fragment: ", fragment);
-    return this.clearSlashes(fragment);
+  modeAPI = {
+    history: {
+      currentRoute: () => {
+        const uri = window.location.pathname + window.location.search;
+        console.log("URI", uri);
+        const fragment = this.clearSlashes(decodeURI(uri));
+        const result = fragment.replace(/\?(.*)$/, "");
+        return this.root !== "/" ? result.replace(this.root, "") : result;
+      },
+      navigate: (path) => {
+        console.log(this);
+        window.history.pushState(
+          null,
+          null,
+          this.root + this.clearSlashes(path)
+        );
+      },
+    },
+    hash: {
+      currentRoute: () => {
+        const match = window.location.href.match(this.hashRegex);
+        return match ? match[1] : "";
+      },
+      navigate: (path) => {
+        window.location.href = `${window.location.href.replace(
+          this.hashRegex,
+          ""
+        )}#${path}`;
+      },
+    },
   };
   // ------------------------------------------------------
 
@@ -60,6 +70,16 @@ class Router {
   flush = () => {
     this.routes = [];
     return this;
+  };
+
+  getCurrentRoute = () => {
+    const fragment = this.modeAPI[this.mode].currentRoute();
+    console.log("Fragment: ", fragment);
+    return this.clearSlashes(fragment);
+  };
+
+  navigateTo = (path) => {
+    this.modeAPI[this.mode].navigate(path);
   };
   // ------------------------------------------------------
 }
