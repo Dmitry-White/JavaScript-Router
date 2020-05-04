@@ -1,7 +1,7 @@
 class Router {
   routes = [];
-  mode = window.history.pushState ? "history" : "hash";;
-  root = '/';
+  mode = window.history.pushState ? "history" : "hash";
+  root = "/";
 
   constructor(options) {
     if (options) {
@@ -10,24 +10,27 @@ class Router {
     }
   }
 
+  clearSlashes = (path) =>
+    path.toString().replace(/\/$/, "").replace(/^\//, "");
+
   add = (path, callback) => {
     const route = {
       path,
-      callback
+      callback,
     };
 
     this.routes.push(route);
 
     return this;
-  }
+  };
 
   remove = (path) => {
-    this.routes = this.routes.filter(route => route.path === path);
+    this.routes = this.routes.filter((route) => route.path === path);
     return this;
-  }
+  };
 
   flush = () => {
     this.routes = [];
     return this;
-  }
+  };
 }
