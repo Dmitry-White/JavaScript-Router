@@ -10,4 +10,24 @@ class Router {
     }
   }
 
+  add = (path, callback) => {
+    const route = {
+      path,
+      callback
+    };
+
+    this.routes.push(route);
+
+    return this;
+  }
+
+  remove = (path) => {
+    this.routes = this.routes.filter(route => route.path === path);
+    return this;
+  }
+
+  flush = () => {
+    this.routes = [];
+    return this;
+  }
 }
