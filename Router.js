@@ -3,6 +3,7 @@ class Router {
   mode = window.history.pushState ? "history" : "hash";
   hashRegex = /#(.*)$/;
   root = "/";
+  current = null;
 
   constructor(options) {
     if (options) {
@@ -21,7 +22,6 @@ class Router {
     history: {
       currentRoute: () => {
         const uri = window.location.pathname + window.location.search;
-        console.log("URI", uri);
         const fragment = this.clearSlashes(decodeURI(uri));
         const result = fragment.replace(/\?(.*)$/, "");
         return this.root !== "/" ? result.replace(this.root, "") : result;
@@ -47,17 +47,17 @@ class Router {
   // ----------------- Router API -------------------------
   add = (path, callback) => {
     const route = {
-      path,
+      path: this.clearSlashes(path),
       callback,
     };
-
     this.routes.push(route);
-
     return this;
   };
 
   remove = (path) => {
-    this.routes = this.routes.filter((route) => route.path === path);
+    this.routes = this.routes.filter(
+      (route) => route.path === this.clearSlashes(path)
+    );
     return this;
   };
 
@@ -68,12 +68,24 @@ class Router {
 
   getCurrentRoute = () => {
     const fragment = this.modeAPI[this.mode].currentRoute();
-    console.log("Fragment: ", fragment);
     return this.clearSlashes(fragment);
   };
 
-  navigateTo = (path) => {
+  navigateTo = (event) => {
+    const path = event.target.dataset.to;
     this.modeAPI[this.mode].navigate(path);
+  };
+
+  listen = () => {
+    clearInterval(this.interval);
+    this.interval = setInterval(this.interval, 50);
+  };
+
+  interval = () => {
+    if (this.current === this.getCurrentRoute()) return;
+    this.current = this.getCurrentRoute();
+    const route = this.routes.find((route) => route.path === this.current);
+    route && route.callback();
   };
   // ------------------------------------------------------
 }
