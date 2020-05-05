@@ -6,15 +6,14 @@ const router = new Router(options);
 router.listen();
 console.log("Init: ", router);
 
-router.add("/user", () => {
-  console.log("User!");
-});
-console.log("Add: ", router);
-
-router.add("/profile", () => {
-  console.log("Profile!");
-});
-console.log("Add: ", router);
+router
+  .add("/user", () => {
+    console.log("User!");
+  })
+  .add("/profile", () => {
+    console.log("Profile!");
+  });
+console.log("Router: ", router);
 
 // router.remove('/user');
 // console.log('Remove: ', router);
