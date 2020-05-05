@@ -1,5 +1,5 @@
 const options = {
-  mode: "hash",
+  mode: "history",
 };
 
 const router = new Router(options);

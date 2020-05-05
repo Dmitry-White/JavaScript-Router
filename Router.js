@@ -27,12 +27,8 @@ class Router {
         return this.root !== "/" ? result.replace(this.root, "") : result;
       },
       navigate: (path) => {
-        console.log(this);
-        window.history.pushState(
-          null,
-          null,
-          this.root + this.clearSlashes(path)
-        );
+        const newPath = this.root + this.clearSlashes(path);
+        window.history.pushState(null, null, newPath);
       },
     },
     hash: {
@@ -41,10 +37,8 @@ class Router {
         return match ? match[1] : "";
       },
       navigate: (path) => {
-        window.location.href = `${window.location.href.replace(
-          this.hashRegex,
-          ""
-        )}#${path}`;
+        const currentPath = window.location.href.replace(this.hashRegex, "");
+        window.location.href = `${currentPath}#${path}`;
       },
     },
   };
