@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+const init = () => {
   const elems = document.querySelectorAll(".sidenav");
   M.Sidenav.init(elems);
-});
+};
+
+document.addEventListener("DOMContentLoaded", init);
