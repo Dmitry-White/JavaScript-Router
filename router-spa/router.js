@@ -22,11 +22,13 @@ const findComponentByPath = (path, routes) => {
   return foundRoute || {};
 };
 
-const router = () => {
-  const path = parseLocation();
-  const { component: ErrorComponent } = findComponentByPath(path);
-  // TODO: If there's no matching route, get the "Error" component
-  // TODO: Render the component in the "app" placeholder
+const renderComponent = (component) => {
+  const root = document.querySelector("#app");
+  root.innerHTML = component.render();
 };
 
-findComponentByPath("/about", routes);
+const router = () => {
+  const path = parseLocation();
+  const { component = ErrorComponent } = findComponentByPath(path);
+  renderComponent(component);
+};
