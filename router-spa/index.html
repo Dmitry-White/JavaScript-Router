@@ -17,34 +17,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </head>
   <body>
-    <nav>
-      <div class="nav-wrapper">
-        <a href="/" class="brand-logo">JavaScript Router</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger"
-          ><i class="material-icons">menu</i></a
-        >
-        <ul class="right hide-on-med-and-down">
-          <li><a href="/">Home</a></li>
-          <li><a href="#/blog">Blog</a></li>
-          <li><a href="#/about">About</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <ul class="sidenav" id="mobile-demo">
-      <li><a href="/">Home</a></li>
-      <li><a href="#/blog">Blog</a></li>
-      <li><a href="#/about">About</a></li>
-    </ul>
+    <section id="nav"></section>
 
     <section id="app"></section>
+
+    <script type="text/javascript" src="./core/constants.js"></script>
 
     <script type="text/javascript" src="./components/About.js"></script>
     <script type="text/javascript" src="./components/Blog.js"></script>
     <script type="text/javascript" src="./components/Error.js"></script>
     <script type="text/javascript" src="./components/Home.js"></script>
+    <script type="text/javascript" src="./components/Nav.js"></script>
+
+    <script type="text/javascript" src="./view.js"></script>
     <script type="text/javascript" src="./router.js"></script>
     <script type="text/javascript" src="./app.js"></script>
+
     <script type="text/javascript" src="./index.js"></script>
   </body>
 </html>

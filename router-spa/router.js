@@ -1,8 +1,3 @@
-const ROUTE_PATHS = {
-  HOME: "/",
-  ABOUT: "/about",
-  BLOG: "/blog",
-};
 const routes = [
   { path: ROUTE_PATHS.HOME, component: HomeComponent },
   { path: ROUTE_PATHS.ABOUT, component: AboutComponent },
@@ -22,15 +17,10 @@ const findComponentByPath = (path, routes) => {
   return foundRoute || {};
 };
 
-const renderComponent = (component) => {
-  const root = document.querySelector("#app");
-  root.innerHTML = component.render();
-};
-
 const Router = ({ routes }) => () => {
   const path = parseLocation();
   const { component = ErrorComponent } = findComponentByPath(path, routes);
-  renderComponent(component);
+  renderComponent(component, "#app");
 };
 
 const router = Router({ routes });
