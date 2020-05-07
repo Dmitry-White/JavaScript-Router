@@ -27,8 +27,10 @@ const renderComponent = (component) => {
   root.innerHTML = component.render();
 };
 
-const router = () => {
+const Router = ({ routes }) => () => {
   const path = parseLocation();
-  const { component = ErrorComponent } = findComponentByPath(path);
+  const { component = ErrorComponent } = findComponentByPath(path, routes);
   renderComponent(component);
 };
+
+const router = Router({ routes });
